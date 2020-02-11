@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>3d_guide</title>
+
+
+    <style>
+
+        ::selection{
+            background:yellow;
+        }
+        @import url('https://fonts.googleapis.com/css?family=Noto+Sans');
+        *{
+            margin:0;
+            padding:0;
+            transition:all 1s;
+        }
+        body{
+            overflow:hidden;
+        }
+        nav{
+            width: 150px;
+            /*height: 500px;*/
+            /*background: rgba(0, 0, 0, 0.14);*/
+            padding: 20px 30px;
+            position: absolute;
+            left: 100px;
+            top: 50%;
+            margin-top:-250px;
+            z-index: 9999;
+            text-align: center;
+            border-radius: 10px;
+        }
+
+        nav button{
+            display: block;
+            width: 100%;
+            margin-bottom: 30px;
+            padding: 10px 30px;
+            border-radius: 50px;
+            background: linear-gradient(to right,#4ea3fc,#19ccfa,#00e1fa);
+            box-shadow: 2px 2px 10px dodgerblue;
+            color:white;
+            font-size: 15px;
+            cursor:pointer;
+            border: none;
+            outline:none;
+            font-family: 'Noto Sans', sans-serif;
+
+        }
+        nav button:last-child{margin-bottom:0;}
+
+
+        nav button.on{
+            transform:translate(-20px,0);
+            background: linear-gradient(to right,#fa709a,#feb367,#fee040);
+            box-shadow: 2px 2px 10px rgba(205, 90, 77, 0.58);
+
+        }
+
+        .container{
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective:2000px;
+            background: linear-gradient(to top,#b9e9ed,#c7e2ef,#d8daf2);
+
+        }
+
+        .container .img{
+            position: absolute;
+            left: 30px;
+            top: 50px;
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(to right,#f7738c,#f77aa0,#f77db2);
+            opacity: 0.7;
+            color:white;
+            font-weight: bold;
+            text-align: center;
+            line-height: 150px;
+            /*position:absolute;*/
+            /*left:0;*/
+            /*top: 0;*/
+            z-index: 100;
+            transition:all 1s cubic-bezier(0.96, 0.13, 0.29, 1.21);
+            transform:scale(0);
+
+
+        }
+
+        .container .img.on{
+            transform:scale(1);
+        }
+
+        .container .img.float{
+            position: static;
+            float: left;
+            margin-right:20px;
+            margin-top:10px;
+        }
+
+        .container .img.floar{
+            transform:translateZ(100px);
+        }
+
+        .container .img.position{
+            position: absolute;
+            margin-right:0;
+            margin-top:0;
+        }
+
+        .container .shadow{
+            position: absolute;
+            left: 30px;
+            top: 50px;
+            width: 150px;
+            height: 150px;
+            background: rgba(0, 0, 0, 0.41);
+            filter: blur(10px);
+            opacity: 0;
+            z-index: -1;
+
+        }
+
+        .container .shadow.on{
+            opacity: 0.7;
+        }
+
+
+        .container .contents{
+            width: 400px;
+            height: 600px;
+            padding: 30px;
+            box-sizing: border-box;
+            font-size: 16px;
+            letter-spacing: 0.06em;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+        .container .contents .board{
+            width: 400px;
+            height: 600px;
+            background: white;
+            padding: 30px;
+            box-sizing: border-box;
+            font-size: 16px;
+            letter-spacing: 0.06em;
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: -1;
+        }
+
+        .container .contents p{
+            position: relative;
+            top: 15px;
+            font-family: 'Noto Sans', sans-serif;
+        }
+        .container .contents p.on{
+            top: 170px;
+        }
+
+        .container .contents.on{
+            transform:rotateZ(-50deg)rotateY(55deg)rotateX(25deg);
+        }
+
+
+
+
+    </style>
+
+</head>
+<body>
+
+
+
+
+<nav>
+   <button id="btn01">Create Img</button>
+   <button id="btn02">position</button>
+   <button id="btn03">float</button>
+   <button id="btn04">3D</button>
+   <button id="btn05">flor</button>
+   <button id="btn06">reset</button>
+</nav>
+
+
+<div class="container">
+    <div class="contents">
+        <div class="img">img</div>
+
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, consectetur, cum enim harum impedit, iste magni molestiae omnis quasi repellendus repudiandae sed soluta sunt totam voluptas.
+            Autem corporis maiores voluptatum? Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusamus aspernatur aut delectus enim esse, ex facilis ipsam iste labore laboriosam, libero
+            nostrum odio quasi velit veniam voluptates.
+            Aspernatur commodi cupiditate debitis deserunt doloribus facilis fuga harum inventore, ipsa magnam minus molestiae necessitatibus placeat quaerat quis ratione rerum sit, soluta?</p>
+
+        <div class="board"></div>
+        <div class="shadow"></div>
+    </div>
+</div>
+
+<script
+        src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+<script>
+
+    $.fn.queueAddClass = function(className) {
+        this.queue('fx', function(next) {
+            $(this).addClass(className);
+            next();
+        });
+        return this;
+    };
+
+
+    $.fn.queueRemoveClass = function(className) {
+        this.queue('fx', function(next) {
+            $(this).removeClass(className);
+            next();
+        });
+        return this;
+    };
+
+
+    $('nav button').click(function(){
+
+        $('nav button').removeClass('on');
+        $(this).addClass('on');
+    })
+
+    $('#btn01').click(function(){
+       $('.img').toggleClass('on');
+       $('.contents p').toggleClass('on');
+    });
+
+
+    $('#btn02').click(function(){
+        $('.img').toggleClass('position');
+        $('.contents p').removeClass('on');
+    });
+
+    $('#btn03').click(function(){
+        $('.img').removeClass('position');
+        $('.img').toggleClass('float');
+        $('.contents p').removeClass('on');
+    });
+
+    $('#btn04').click(function(){
+
+        $('.contents').toggleClass('on');
+        $('.shadow').removeClass('on');
+    });
+
+    $('#btn05').click(function(){
+
+        $('.img').toggleClass('floar');
+        $('.shadow').toggleClass('on');
+    });
+
+    $('#btn06').click(function(){
+
+        $('.img').removeClass('on').removeClass('float').removeClass('floar');
+        $('.contents').removeClass('on');
+        $('.contents p').removeClass('on');
+        $('.shadow').removeClass('on');
+    });
+    //
+    // var btn01 = document.getElementById('btn01');
+    // var btn02 = document.getElementById('btn02');
+    // var btn03 = document.getElementById('btn03');
+    //
+    // var contents = document.querySelector('.contents');
+    // var img_con = document.querySelector('.img');
+    // var p = document.querySelector('p');
+    //
+    //
+    // btn01.addEventListener('click',function(){
+    //     img_con.classList.toggle('on');
+    //     p.classList.toggle('on');
+    //     // console.log('clicked')
+    // });
+    //
+    // btn02.addEventListener('click',function(){
+    //     img_con.classList.toggle('float');
+    //     p.classList.toggle('on');
+    //     // console.log('clicked')
+    // });
+    // btn03.addEventListener('click',function(){
+    //     contents.classList.toggle('on');
+    //     // console.log('clicked')
+    // });
+
+</script>
+</body>
+</html>
